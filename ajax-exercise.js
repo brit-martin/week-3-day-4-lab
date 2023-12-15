@@ -2,8 +2,16 @@ import axios from 'axios';
 
 // PART 1: Show Dog Photo
 
+
+
 function showDogPhoto(evt) {
-  // TODO: get a random photo from the Dog API and show it in the #dog-image div
+  let dogImg = document.querySelector('#dog-image') 
+  axios.get(`https://dog.ceo/api/breeds/image/random`)
+  .then((response) => {
+    let imageHolder = document.createElement("img")
+    imageHolder.src = response.data.message
+    dogImg.appendChild(imageHolder)
+  })
 }
 
 document.querySelector('#get-dog-image').addEventListener('click', showDogPhoto);
