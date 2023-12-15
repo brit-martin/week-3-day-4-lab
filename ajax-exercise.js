@@ -18,8 +18,11 @@ document.querySelector('#get-dog-image').addEventListener('click', showDogPhoto)
 
 // PART 2: Show Weather
 
-function showWeather(evt) {
-  const zipcode = document.querySelector('#zipcode-field').value;
+ async function showWeather(evt) {
+    const zipcode = document.querySelector('#zipcode-field').value;
+    const response = await axios.get(`/weather.txt?zipcode=${zipcode}`);
+    document.querySelector('#weather-info').innerText = response.data
+ 
 
   // TODO: request weather with that URL and show the forecast in #weather-info
 }
@@ -28,11 +31,26 @@ document.querySelector('#weather-button').addEventListener('click', showWeather)
 
 // PART 3: Order Cookies
 
-function orderCookies(evt) {
+
+async function orderCookies(evt) {
+  evt.preventDefault()
   // TODO: Need to preventDefault here, because we're listening for a submit event!
+  const cookieType = document.querySelector('#cookie-type-field').value
+  const qty = document.querySelector('#qty-field').value
   // TODO: show the result message after your form
+  const response = await axios.post('/order-cookies.json', {cookieType: cookieType, qty: qty})
+  
   // TODO: if the result code is ERROR, make it show up in red (see our CSS!)
+  const orderStatus = document.querySelector("#order-status")
+  if( response.data.resultCode === 'ERROR'){
+    orderStatus.classList.add('order-error')
+  }
+    else {
+      orderStatus.classList.remove('order-error')
+    }
+
 }
+
 document.querySelector('#order-form').addEventListener('submit', orderCookies);
 
 // PART 4: iTunes Search
